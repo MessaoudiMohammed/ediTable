@@ -207,7 +207,6 @@ var x=$(".ediTable").ediTable(
                 text:"<i class=\"fas fa-eye\"></i>",
                 selector:"show", // class
                 action:function($values){
-                    //console.log($values);
                     //location.href=$($row).children("td:first-child").text()+"/show/";
                 }
             },
