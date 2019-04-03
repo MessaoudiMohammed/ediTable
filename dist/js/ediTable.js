@@ -253,7 +253,7 @@
             if($buttonActived)
                 not=`:not(:last-child)`;
             newRow.children(`td${not}`).html("");
-            newRow.children(`td${not}`).data("value","");
+            newRow.children(`td${not}`).attr("data-value","");
             newRow.children(`td${not}`).removeAttr("style");
             if($tr.is("tr:last"))
                 $tr.parent().append(newRow);
@@ -346,12 +346,7 @@
                         $(".editable-input:input",$(cell)).on("keydown",function(e){
                             captureKey(e,$tr);
                         })
-                    }
-                    if($(this).data("id")&&$(this).data("type")=="select")
-                    {
-                        $(this).children("select").val($(this).data("id"));
-                    }
-                   
+                    }                   
                     if(options.json.head[indexCell].validation!=false)
                     {
                         $(':input',$tr.children(`:nth-child(${indexCell+1})`)).blur(function(event) {
