@@ -200,7 +200,7 @@
                     if(options.json.head[indexCell].type=="color")
                     {
                         newValues.push($(cell).val());
-                        $(cell).data("value",$('.editable-input:input',$(cell)).val());
+                        $(cell).attr("data-value",$('.editable-input:input',$(cell)).val());
                         $(cell).css({
                             "background-color":$('.editable-input:input',$(cell)).val(),
                         });
