@@ -1,0 +1,49 @@
+html,body
+{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding:30px;
+}
+*, *:before, *:after
+{
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+}
+html
+{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.editable-row-style
+{
+    cursor:pointer;
+    user-select:none;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+}
+.editable-input
+{
+    position:relative;
+}
+.editable-input.required::after
+{
+    position:absolute;
+    content:"Field required";
+    background-color:#f00;
+    color:#fff;
+}
+.editable-input.error
+{
+    border:1px #f00 solid;
+    box-shadow : 0px 0px 4px 0px #f00;
+}
+th.sortable
+{
+    cursor: pointer;
+    user-select:none;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+}

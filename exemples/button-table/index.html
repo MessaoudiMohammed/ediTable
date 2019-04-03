@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../dist/css/ediTable.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../../lib/prism.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h3>CODE :</h3>
+        <pre>
+            <code class="language-markup">
+                &lt;table class="ediTable">
+                &lt;/table>
+                &lt;script>
+                    $(".ediTable").ediTable({
+                        json:{
+                            body:jsonArray,
+                        },
+                        button:{
+                            edit:{
+                                active:true,
+                                text:"&lt;i class=\"far fa-edit\">&lt;/i>",
+                                textActive:"&lt;i class=\"far fa-save\">&lt;/i>",
+                                selector:"editCustom"
+                            },
+                            delete:{
+                                active:true,
+                                text:"&lt;i class=\"fas fa-trash-alt\">&lt;/i>",
+                                selector:"deleteCustom"
+        
+                            },
+                            custom:{
+                                active:true,
+                                text:"&lt;i class=\"fas fa-eye\">&lt;/i>",
+                                selector:"CustomBotton",
+                                action:function($values,$tr){
+                                    location.href=$values[0]+"/show";
+                                }
+                            },
+                            title:"Custom"
+                        }
+                    });
+                &lt;/script>
+            </code>
+        </pre>
+    </div>
+    <div>
+        <h3>RESULT :</h3>
+        <table class="ediTable">
+        </table>
+    </div>
+    
+    <script src="../../lib/jquery-3.3.1.min.js"></script>
+    <script src="../../dist/js/ediTable.min.js"></script>
+    <script src="../../lib/prism.js"></script>
+    <script src="../data.js"></script>    
+    <script>
+        $(".ediTable").ediTable({
+            json:{
+                body:jsonArray,
+            },
+            button:{
+                    edit:{
+                        active:true,
+                        text:"<i class=\"far fa-edit\"></i>",
+                        textActive:"<i class=\"far fa-save\"></i>",
+                        selector:"editCustom"
+                    },
+                    delete:{
+                        active:true,
+                        text:"<i class=\"fas fa-trash-alt\"></i>",
+                        selector:"deleteCustom"
+
+                    },
+                    custom:{
+                        active:true,
+                        text:"<i class=\"fas fa-eye\"></i>",
+                        selector:"CustomBotton",
+                        action:function($values,$tr){
+                            location.href=$values[0]+"/show";
+                        }
+                    },
+                    title:"Custom"
+                }
+        });
+    </script>
+</body>
+</html>

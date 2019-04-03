@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../../dist/css/ediTable.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../../lib/prism.css">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h3>CODE :</h3>
+        <pre>
+            <code class="language-markup">
+                &lt;table class="ediTable">
+                    &lt;tbody>
+                        &lt;tr class="editable-row-style">
+                            &lt;td class="index">0&lt;/td>
+                            &lt;td class="integer">-5&lt;/td>
+                            &lt;td class="link">http://www.site-55.com&lt;/td>
+                            &lt;td class="name">TEST&lt;/td>
+                            &lt;td class="surname">Glover-TEST&lt;/td>
+                            &lt;td class="fullname">Nicholas Levine-TEST&lt;/td>
+                            &lt;td class="email">sue@carlson.hn-TEST&lt;/td>
+                            &lt;td class="bool">false-TEST&lt;/td>
+                        &lt;/tr>
+                    &lt;/tbody>
+                &lt;/table>
+                &lt;script>
+                    $(".ediTable").ediTable({
+                        json:{
+                            body:jsonArray,
+                        }
+                    });
+                &lt;/script>
+            </code>
+        </pre>
+    </div>
+    <div>
+        <h3>RESULT :</h3>
+        <table class="ediTable">
+            <tbody>
+                <tr class="editable-row-style">
+                    <td class="index">0</td>
+                    <td class="integer">-5</td>
+                    <td class="link">http://www.site-55.com</td>
+                    <td class="name">TEST</td>
+                    <td class="surname">Glover-TEST</td>
+                    <td class="fullname">Nicholas Levine-TEST</td>
+                    <td class="email">sue@carlson.hn-TEST</td>
+                    <td class="bool">false-TEST</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <script src="../../../lib/jquery-3.3.1.min.js"></script>
+    <script src="../../../dist/js/ediTable.min.js"></script>
+    <script src="../../../lib/prism.js"></script>
+    <script src="../../data.js"></script>    
+    <script>
+        $(".ediTable").ediTable({
+            json:{
+                body:jsonArray,
+            },
+        });
+    </script>
+</body>
+</html>

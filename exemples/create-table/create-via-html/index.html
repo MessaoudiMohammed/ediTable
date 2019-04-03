@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../../dist/css/ediTable.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../../lib/prism.css">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h3>CODE :</h3>
+        <pre>
+            <code class="language-markup">
+                &lt;table class="ediTable">
+                &lt;/table>
+                &lt;script>
+                    $(".ediTable").ediTable();
+                &lt;/script>
+            </code>
+        </pre>
+    </div>
+    <div>
+        <h3>RESULT :</h3>
+        <table class="ediTable">
+            <thead>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th> 
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>Jill</td>
+                <td>Smith</td> 
+                <td>50</td>
+                </tr>
+                <tr>
+                <td>Eve</td>
+                <td>Jackson</td> 
+                <td>94</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="../../../lib/jquery-3.3.1.min.js"></script>
+    <script src="../../../dist/js/ediTable.min.js"></script>
+    <script src="../../../lib/prism.js"></script>
+    <script src="../../data.js"></script> 
+    <script>
+        $(".ediTable").ediTable();
+    </script>
+</body>
+</html>

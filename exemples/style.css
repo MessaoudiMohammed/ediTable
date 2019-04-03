@@ -1,0 +1,14 @@
+  table,tr,td,th
+  {
+      border:1px solid #000;
+      border-collapse:collapse; 
+  }
+  table
+  {
+    width: 100%;
+  }
+  table img
+  {
+    height:50px;
+    width:50px;
+  }
