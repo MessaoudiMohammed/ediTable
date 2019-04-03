@@ -225,7 +225,7 @@
                         var extra=options.json.head[indexCell].data.filter(function(a){
                             return a.value==$('.editable-input:input',$(cell)).val();
                         });
-                        $(cell).data("value",extra[0].value);
+                        $(cell).attr("data-value",extra[0].value);
                         $(cell).html(extra[0].label);
                         newValues.push({label:extra[0].label,value:extra[0].value});
 
