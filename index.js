@@ -4,7 +4,7 @@ jsonObject=[
       "_id": "5ca1087e68d9ef80d9368a13",
       "date": "1995-10-22",
       "src": "http://placehold.it/32x32",
-      "isActive": "true",
+      "isActive": 17,
       "picture": "http://placehold.it/32x32",
       "age": 36,
       "eyeColor": "#0000ff",
@@ -18,7 +18,7 @@ jsonObject=[
       "_id": "5ca1087e02a391cfaa78b232",
       "date": "1995-10-22",
       "src": "http://placehold.it/32x32",
-      "isActive": "false",
+      "isActive": 11,
       "picture": "http://placehold.it/32x32",
       "age": 34,
       "eyeColor": "#AABB00",
@@ -32,7 +32,7 @@ jsonObject=[
       "_id": "5ca1087e3ca2eda2dee7132b",
       "date": "1995-10-22",
       "src": "http://placehold.it/32x32",
-      "isActive": "false",
+      "isActive": 11,
       "picture": "http://placehold.it/32x32",
       "age": 35,
       "eyeColor": "#AABB00",
@@ -46,7 +46,7 @@ jsonObject=[
       "_id": "5ca1087e83fcc8209bdcfd4b",
       "date": "1995-10-22",
       "src": "http://placehold.it/32x32",
-      "isActive": "false",
+      "isActive": 11,
       "picture": "http://placehold.it/32x32",
       "age": 25,
       "eyeColor": "#AABB00",
@@ -60,7 +60,7 @@ jsonObject=[
       "_id": "5ca1087ecc61081314ce4778",
       "date": "1995-10-22",
       "src": "http://placehold.it/32x32",
-      "isActive": "false",
+      "isActive": 11,
       "picture": "http://placehold.it/32x32",
       "age": 39,
       "eyeColor": "#AABB00",
@@ -74,7 +74,7 @@ jsonObject=[
       "_id": "5ca1087e422d67dc53057d7c",
       "date": "1995-10-22",
       "src": "http://placehold.it/32x32",
-      "isActive": "false",
+      "isActive": 11,
       "picture": "http://placehold.it/32x32",
       "age": 31,
       "eyeColor": "#AABB00",
@@ -88,7 +88,7 @@ jsonObject=[
       "_id": "5ca1087e9d802220a0cec11d",
       "date": "1995-10-22",
       "src": "http://placehold.it/32x32",
-      "isActive": "true",
+      "isActive": 17,
       "picture": "http://placehold.it/32x32",
       "age": 34,
       "eyeColor": "#0000ff",
@@ -127,9 +127,11 @@ var x=$(".ediTable").ediTable(
                 {
                     title:"Active",
                     type:"checkbox",
-                    checked:"true",
+                    checked:17,
+                    unchecked:11,
                     label:function($result){
-                        if($result==1)
+                        console.log($result);
+                        if($result==17)
                         {
                             return "Active";
                         }

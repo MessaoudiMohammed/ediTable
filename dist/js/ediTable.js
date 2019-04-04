@@ -1,5 +1,5 @@
 //************************************************************************//
-//                        Editable.js v0.0.1 (beta)                       //
+//                        Editable.js v0.0.2 (beta)                       //
 //                         Date Release:04/02/2019                        //
 //                     Developed By:Mohammed Messaoudi                    //
 //                 https://github.com/OxiGen1001/ediTable/                //
@@ -209,13 +209,16 @@
                     }       
                     if(options.json.head[indexCell].type=="checkbox")
                     {
-                        if(options.json.head[indexCell].checked==undefined)
-                            return console.error("you missed checked property of checkbox!");
-                        var checked="",label=options.json.head[indexCell].checked;
-                        $('.editable-input:input',$(cell)).is(":checked")?checked=" checked":false;
+                        if(options.json.head[indexCell].checked==undefined||options.json.head[indexCell].unchecked==undefined)
+                            return console.error("you missed checked/unchecked property of checkbox!");
+                        var checked="",label=options.json.head[indexCell].checked,checkedVar=options.json.head[indexCell].unchecked;
+                        $('.editable-input:input',$(cell)).is(":checked")?checked=" checked":false;                           
+                        if($('.editable-input:input',$(cell)).is(":checked"))
+                            checkedVar=options.json.head[indexCell].checked
                         if(options.json.head[indexCell].label!=undefined)
-                            label=options.json.head[indexCell].label($('.editable-input:input',$(cell)).is(":checked"));
-                        $(cell).attr("data-value",$('.editable-input:input',$(cell)).is(":checked"));
+                            label=options.json.head[indexCell].label(checkedVar);
+                            
+                        $(cell).attr("data-value",checkedVar);
                         $(cell).html(label);
                         newValues.push({label:label,value:$(cell).val()});
                         done=false;
@@ -307,11 +310,12 @@
                         classes="class=\""+options.json.head[indexCell].classes+" editable-input\" ";                    
                     if(options.json.head[indexCell].type=="checkbox")
                     {
-                        if(options.json.head[indexCell].checked==undefined)
-                            return console.error("you missed checked property for checkbox column!");
-                                 
-                        input+=`"${options.json.head[indexCell].type}" ${classes} ${$(cell).attr("data-value")==options.json.head[indexCell].checked?"checked":false} />`;
-
+                        var check=$(cell).attr("data-value");
+                        if(options.json.head[indexCell].checked==undefined||options.json.head[indexCell].unchecked==undefined)
+                            return console.error("you missed checked/unchecked property for checkbox column!");
+                        if(typeof options.json.head[indexCell].checked=="boolean")
+                            check=$.parseJSON($(cell).attr("data-value"));
+                        input+=`"${options.json.head[indexCell].type}" ${classes} ${check==options.json.head[indexCell].checked?"checked":false} />`;
 
                     }else if(options.json.head[indexCell].type=="select")
                     {
@@ -468,16 +472,16 @@
                             if(options.json.head[i].type=="checkbox")
                             {
 
-                                var checked="",label=cell;
-                                if(options.json.head[i].checked==undefined)
-                                    return console.error("you missed checked property for checkbox column!");
-                                
+                                var checked=options.json.head[i].unchecked,label=cell;
+                                if(options.json.head[i].checked==undefined||options.json.head[i].unchecked==undefined)
+                                    return console.error("you missed checked/unchecked property for checkbox column!");
+                                if(typeof options.json.head[i].checked=="boolean")
+                                    $.parseJSON(cell);
                                 if(options.json.head[i].checked==cell)
-                                    checked="checked";
+                                    checked=options.json.head[i].checked;
                                 if(options.json.head[i].label!=undefined)
-                                    label=options.json.head[i].label(options.json.head[i].checked==cell)
-                                    
-                                $table+=`<td class="${indexCell}" data-value="${options.json.head[i].checked==cell}" >${label}</td>`;
+                                    label=options.json.head[i].label(checked)
+                                $table+=`<td class="${indexCell}" data-value="${checked}" >${label}</td>`;
                                 done=false;
                                 
                             }
