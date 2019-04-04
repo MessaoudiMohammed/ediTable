@@ -66,9 +66,10 @@
                                     title:"Active",
                                     type:"checkbox",
                                     checked:"true",
+                                    unchecked:"false",
                                     label:function($value)
                                     {
-                                        if($value)
+                                        if($value="true")
                                             return "Active";
                                         return "UnActive";
                                     }
