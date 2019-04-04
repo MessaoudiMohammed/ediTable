@@ -290,7 +290,8 @@
             newRow.children(`td${not}`).html("");
             newRow.children(`td${not}`).attr("data-value","");
             newRow.children(`td${not}`).removeAttr("style");
-            if($tr.is("tr:last"))
+            console.log($($tr,$tr.parent()));
+            if($($tr,$tr.parent()).is("tr:last-child"))
                 $tr.parent().append(newRow);
         }
         var edit = function($tr)

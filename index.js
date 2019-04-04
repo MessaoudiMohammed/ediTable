@@ -212,34 +212,38 @@ var x=$(".ediTable").ediTable(
                 }
             },
         },
-        addRow:true,
+        add:true,
         sortable:true,
         keyboard:true,
         afterSave:function(values,oldvalues){
-            console.log(values,oldvalues);
-            formdata=new FormData();
-            $.each(values,function(index,cellValue){
-                console.log(cellValue);
-                formdata.append(index,cellValue);
-            });
-            $.ajax({
-                url:"/path/serverFile[.extension]",
-                data:formdata,
-                type:"method",
-                success:function(resp){
+            // console.log(values,oldvalues);
+            // formdata=new FormData();
+            // $.each(values,function(index,cellValue){
+            //     console.log(cellValue);
+            //     formdata.append(index,cellValue);
+            // });
+            // $.ajax({
+            //     url:"/path/serverFile[.extension]",
+            //     data:formdata,
+            //     type:"method",
+            //     success:function(resp){
 
-                }
-            });
+            //     }
+            // });
         },
         afterDelete:function(values)
         {
-            $.ajax({
-                url:"/path/serverFile[.extension]",
-                data:{id:values._id},
-                success:function(resp){
+            // $.ajax({
+            //     url:"/path/serverFile[.extension]",
+            //     data:{id:values._id},
+            //     success:function(resp){
 
-                }
-            })
+            //     }
+            // })
+        },
+        requiredAction:function($tr)
+        {
+            console.log($tr);
         }
     }
 );
