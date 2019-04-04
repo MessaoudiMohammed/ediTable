@@ -1,5 +1,5 @@
 //************************************************************************//
-//                        Editable.js v0.0.2 (beta)                       //
+//                        Editable.js v0.0.3 (beta)                       //
 //                         Date Release:04/02/2019                        //
 //                     Developed By:Mohammed Messaoudi                    //
 //                 https://github.com/OxiGen1001/ediTable/                //
@@ -8,6 +8,7 @@
     "use strict";
     $.fn.ediTable=function(options){
         var values=[];
+        var _instances=[];
         var options = $.extend(true,{
             editable:true,
             // convert json to table
@@ -144,11 +145,11 @@
         };
         var save = function($tr)
         {
-            options.beforeSave(getValues($tr),$tr);
-            var not="";
+            options.beforeSave(values[$tr.prevAll().length],$tr);
+            var not="",indexID=0,indexStr="";
             if($buttonActived)
                 not=`:not(:last-child)`;
-            var required=[],invalid=[],newValues=[];
+            var required=[],invalid=[],newValues={};
             $tr.children(`td${not}`).each(function(indexCell,cell){
                 if(options.json.head[indexCell].editable!=false)
                 {
@@ -195,17 +196,19 @@
             }
             $tr.children(`td${not}`).each(function(indexCell,cell){
                 var done=true,notEditable=false;
+                if($(cell).attr("data-index")!=undefined)
+                    indexStr=$(cell).attr("data-index");
+                else
+                    indexStr=indexID;
                 if(options.json.head.length>0)
                 {
-                    
                     if(options.json.head[indexCell].type=="color")
                     {
-                        
                         done=false;
                         if(options.json.head[indexCell].editable==false)
                             notEditable=true;
                         else
-                            newValues.push({value:$('.editable-input:input',$(cell)).val()});
+                            newValues[indexStr]=$('.editable-input:input',$(cell)).val();
                         $(cell).attr("data-value",$('.editable-input:input',$(cell)).val());
                         $(cell).css({
                             "background-color":$('.editable-input:input',$(cell)).val(),
@@ -227,7 +230,7 @@
                         $(cell).html(label);
                         done=false;
                         if(options.json.head[indexCell].editable!=false)
-                            newValues.push({label:label,value:checkedVar});
+                            newValues[indexStr]=checkedVar;
                         else
                             notEditable=true;
                     }
@@ -241,7 +244,7 @@
                         
                         done=false;
                         if(options.json.head[indexCell].editable!=false)
-                            newValues.push({label:extra[0].label,value:extra[0].value});
+                            newValues[indexStr]=extra[0].value;
                         else
                             notEditable=true;
                     }
@@ -249,7 +252,7 @@
                     {
                         done=false;
                         if(options.json.head[indexCell].editable!=false)
-                            newValues.push({value:$(cell).find("img").attr("src")});
+                            newValues[indexStr]=($(cell).find("img").attr("src"));
                         else
                             notEditable=true;
                         
@@ -258,7 +261,7 @@
                 if(done)
                 {
                     if(options.json.head[indexCell].editable!=false)
-                        newValues.push({value:$('.editable-input:input',$(cell)).val()});
+                        newValues[indexStr]=$('.editable-input:input',$(cell)).val();
                     else
                         notEditable=true;
                     $(cell).html($('.editable-input:input',$(cell)).val());
@@ -266,8 +269,9 @@
                 }
                 if(notEditable)
                 {
-                    newValues.push({value:$(cell).text()});
+                    newValues[indexStr]=$(cell).text();
                 }
+                indexID++;
             });
             $.each(options.button,function(){
                 if(this.active)
@@ -302,38 +306,33 @@
                 }
             })
             
-            var input="";
+            var input="",indexID=0,indexStr;
             $tr.children(`td${not}`).each(function(indexCell,cell){
+                
                 
                 if($buttonActived&&$(cell).is(":last-child"))
                     return;
+                if($(cell).attr("data-index")!=undefined&&$(cell).attr("data-index")!="")
+                    indexStr=$(cell).attr("data-index");
+                else
+                    indexStr=indexID;
+                indexID++;
                 if(options.json.head[indexCell]==undefined)
                     options.json.head[indexCell]=[];
                 if(options.json.head[indexCell].type==undefined)
                         options.json.head[indexCell].type="text";
                 if(values[$tr.prevAll().length]==undefined)
-                    values[$tr.prevAll().length]=[];
-                values[$tr.prevAll().length][indexCell]={
-                    value:$(cell).text(),
-                };
+                    values[$tr.prevAll().length]={};
+                values[$tr.prevAll().length][indexStr]=$(cell).text();
                 if(options.json.head[indexCell].type=="select"||options.json.head[indexCell].type=="color"||options.json.head[indexCell].type=="checkbox")
-                values[$tr.prevAll().length][indexCell]={
-                    label:$(cell).text(),
-                    value:$(cell).attr("data-value"),
-                };
+                    values[$tr.prevAll().length][indexStr]=$(cell).attr("data-value");
                 
                 if(options.json.head[indexCell].type=="image")
-                {
-                    values[$tr.prevAll().length][indexCell]={
-                        value:$(cell).children("img").attr("src"),
-                    };
-                    return;
-                }
-                    
+                    return values[$tr.prevAll().length][indexStr]=$(cell).children("img").attr("src");
                 if(options.json.head[indexCell].editable!=false)
                 {
                     input="<input style=\"width:"+$(cell).width()+"px\" type=";
-                    var classes="class=\"editable-input\"",id="",value="value=\""+values[$tr.prevAll().length][indexCell].value+"\"";
+                    var classes="class=\"editable-input\"",id="",value="value=\""+values[$tr.prevAll().length][indexStr]+"\"";
                     if(options.json.head[indexCell].classes!=undefined)
                         classes="class=\""+options.json.head[indexCell].classes+" editable-input\" ";                    
                     if(options.json.head[indexCell].type=="checkbox")
@@ -406,39 +405,53 @@
             options.afterDelete(getValues($tr),$tr);
         }
         var getValues=function($tr){
-            var _values=[];
-            var not="";
+            var _values={},not="",indexStr,indexID=0;
             if($buttonActived)
                 not=":not(:last-child)";
             $($tr.children(not)).each(function(indexCell,cell){
                 var _check=true;
+                if($(cell).attr("data-index")!=undefined&&$(cell).attr("data-index")!="")
+                    indexStr=$(cell).attr("data-index");
+                else
+                    indexStr=indexID;
+                indexID++;
                 if(options.json.head.length)
                 {
+                   
                     if($(cell).find(".editable-input:input").length)
                     {
                         if(options.json.head[indexCell].type=="checkbox")
                         {
-                            _values.push($(cell).find(".editable-input:input").is(":checked"));
+                            var checked="";
+                            $(cell).find(".editable-input:input").is(":checked")?checked=options.json.head[indexCell].checked:checked=options.json.head[indexCell].unchecked;
+                            
+                            _values[indexStr]=checked;
                             _check=false;
                         }
-                        if(options.json.head[indexCell].type=="image")
-                        {
-                            _values.push($(cell).find("img").attr("src"));
-                            _check=false;
-                        }
+                    }
+                    if(options.json.head[indexCell].type=="image")
+                    {
+                        _values[indexStr]=$(cell).find("img").attr("src");
+                        _check=false;
                     }
                 }
                 if(_check)
                 {
                     if($(cell).find(".editable-input:input").length)
                     {
-                        _values.push($(cell).find(".editable-input:input").val());
+                        _values[indexStr]=$(cell).find(".editable-input:input").val();
                     }else
                     {
-                        _values.push($(cell).text());
+                        _values[indexStr]=$(cell).text();
+                    }
+                    if(options.json.head.length&&options.json.head[indexCell].type=="checkbox"||options.json.head[indexCell].type=="select")
+                    {                       
+                        _values[indexStr]=$(cell).attr("data-value");
+                        _check=false;
                     }
                 }
             })
+            return _values;
         }
         var ediTable =function($this)
         {
@@ -475,7 +488,7 @@
                         {
                             if(options.json.head[i].type=="color")
                             {
-                                $table+=`<td class="${indexCell}" data-value="${cell}" style="background-color:${cell}"></td>`;
+                                $table+=`<td data-index="${indexCell}" data-value="${cell}" style="background-color:${cell}"></td>`;
                                 done=false;
                             }                  
                             if(options.json.head[i].type=="select")    
@@ -487,13 +500,13 @@
                                     });
                                     if(!extra.length)
                                         return console.error("make sure that your data is correct!");
-                                    $table+=`<td class="${indexCell}" data-value="${extra[0].value}" >${extra[0].label}</td>`;
+                                    $table+=`<td data-index="${indexCell}" data-value="${extra[0].value}" >${extra[0].label}</td>`;
                                     done=false;
                                 }
                             }
                             if(options.json.head[i].type=="image")
                             {
-                                $table+=`<td class="${indexCell}" ><img src="${cell}"/></td>`;
+                                $table+=`<td data-index="${indexCell}" ><img src="${cell}"/></td>`;
                                 done=false;
                             }
                                 
@@ -509,13 +522,13 @@
                                     checked=options.json.head[i].checked;
                                 if(options.json.head[i].label!=undefined)
                                     label=options.json.head[i].label(checked)
-                                $table+=`<td class="${indexCell}" data-value="${checked}" >${label}</td>`;
+                                $table+=`<td data-index="${indexCell}" data-value="${checked}" >${label}</td>`;
                                 done=false;
                                 
                             }
                         }
                         if(done)
-                            $table+=`<td class="${indexCell}" >${cell}</td>`;
+                            $table+=`<td data-index="${indexCell}" >${cell}</td>`;
                         i++;
                     });
                     $table+=`</tr>`;
@@ -550,16 +563,24 @@
                 console.warn("table without heads!");
             if(!$this.find("tbody tr").length)
                 console.warn("Empty table!");
+            return 
         }
         
         this.each(function(){
+            _instances.push($(this));
             ediTable($(this));
         });
-        return {
-            elememt:this,
-            options:options
+        var data=function(index=0){
+            
+            var data=[];
+            _instances[index].children("tbody").children("tr").each(function(indexRow,row){
+                data.push(getValues($(row)));
+            });
+            return data;
         }
-        
+        return {
+            data:data
+        }
     };
 }($));
 

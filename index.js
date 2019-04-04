@@ -3,9 +3,9 @@ jsonObject=[
     {
       "_id": "5ca1087e68d9ef80d9368a13",
       "date": "1995-10-22",
-      "src": "http://placehold.it/32x32",
-      "isActive": 17,
       "picture": "http://placehold.it/32x32",
+      "isActive": 17,
+      "website": "http://placehold.it/32x32",
       "age": 36,
       "eyeColor": "#0000ff",
       "name": "Rita Farmer",
@@ -17,9 +17,9 @@ jsonObject=[
     {
       "_id": "5ca1087e02a391cfaa78b232",
       "date": "1995-10-22",
-      "src": "http://placehold.it/32x32",
-      "isActive": 11,
       "picture": "http://placehold.it/32x32",
+      "isActive": 11,
+      "website": "http://placehold.it/32x32",
       "age": 34,
       "eyeColor": "#AABB00",
       "name": "Mae Ashley",
@@ -31,9 +31,9 @@ jsonObject=[
     {
       "_id": "5ca1087e3ca2eda2dee7132b",
       "date": "1995-10-22",
-      "src": "http://placehold.it/32x32",
-      "isActive": 11,
       "picture": "http://placehold.it/32x32",
+      "isActive": 11,
+      "website": "http://placehold.it/32x32",
       "age": 35,
       "eyeColor": "#AABB00",
       "name": "Cherry Atkinson",
@@ -45,9 +45,9 @@ jsonObject=[
     {
       "_id": "5ca1087e83fcc8209bdcfd4b",
       "date": "1995-10-22",
-      "src": "http://placehold.it/32x32",
-      "isActive": 11,
       "picture": "http://placehold.it/32x32",
+      "isActive": 11,
+      "website": "http://placehold.it/32x32",
       "age": 25,
       "eyeColor": "#AABB00",
       "name": "Ofelia Mcbride",
@@ -59,9 +59,9 @@ jsonObject=[
     {
       "_id": "5ca1087ecc61081314ce4778",
       "date": "1995-10-22",
-      "src": "http://placehold.it/32x32",
-      "isActive": 11,
       "picture": "http://placehold.it/32x32",
+      "isActive": 11,
+      "website": "http://placehold.it/32x32",
       "age": 39,
       "eyeColor": "#AABB00",
       "name": "Megan Mccarty",
@@ -73,9 +73,9 @@ jsonObject=[
     {
       "_id": "5ca1087e422d67dc53057d7c",
       "date": "1995-10-22",
-      "src": "http://placehold.it/32x32",
-      "isActive": 11,
       "picture": "http://placehold.it/32x32",
+      "isActive": 11,
+      "website": "http://placehold.it/32x32",
       "age": 31,
       "eyeColor": "#AABB00",
       "name": "Meyer Whitaker",
@@ -87,9 +87,9 @@ jsonObject=[
     {
       "_id": "5ca1087e9d802220a0cec11d",
       "date": "1995-10-22",
-      "src": "http://placehold.it/32x32",
-      "isActive": 17,
       "picture": "http://placehold.it/32x32",
+      "isActive": 17,
+      "website": "http://placehold.it/32x32",
       "age": 34,
       "eyeColor": "#0000ff",
       "name": "Lolita Rush",
@@ -215,12 +215,31 @@ var x=$(".ediTable").ediTable(
         addRow:true,
         sortable:true,
         keyboard:true,
-        // requiredAction:function($inputs){
-        // },
-        // invalidAction:function($inputs){
-        // }
         afterSave:function(values,oldvalues){
-            console.log(values);
-          }
+            console.log(values,oldvalues);
+            formdata=new FormData();
+            $.each(values,function(index,cellValue){
+                console.log(cellValue);
+                formdata.append(index,cellValue);
+            });
+            $.ajax({
+                url:"/path/serverFile[.extension]",
+                data:formdata,
+                type:"method",
+                success:function(resp){
+
+                }
+            });
+        },
+        afterDelete:function(values)
+        {
+            $.ajax({
+                url:"/path/serverFile[.extension]",
+                data:{id:values._id},
+                success:function(resp){
+
+                }
+            })
+        }
     }
 );
