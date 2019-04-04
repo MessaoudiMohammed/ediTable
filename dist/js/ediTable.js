@@ -194,19 +194,24 @@
                 return
             }
             $tr.children(`td${not}`).each(function(indexCell,cell){
-                var done=true;
+                var done=true,notEditable=false;
                 if(options.json.head.length>0)
                 {
+                    
                     if(options.json.head[indexCell].type=="color")
                     {
-                        newValues.push($(cell).val());
+                        
+                        done=false;
+                        if(options.json.head[indexCell].editable==false)
+                            notEditable=true;
+                        else
+                            newValues.push({value:$('.editable-input:input',$(cell)).val()});
                         $(cell).attr("data-value",$('.editable-input:input',$(cell)).val());
                         $(cell).css({
                             "background-color":$('.editable-input:input',$(cell)).val(),
                         });
                         $(cell).html("");
-                        done=false;
-                    }       
+                    }
                     if(options.json.head[indexCell].type=="checkbox")
                     {
                         if(options.json.head[indexCell].checked==undefined||options.json.head[indexCell].unchecked==undefined)
@@ -220,8 +225,11 @@
                             
                         $(cell).attr("data-value",checkedVar);
                         $(cell).html(label);
-                        newValues.push({label:label,value:$(cell).val()});
                         done=false;
+                        if(options.json.head[indexCell].editable!=false)
+                            newValues.push({label:label,value:checkedVar});
+                        else
+                            notEditable=true;
                     }
                     if(options.json.head[indexCell].data!=undefined)
                     {
@@ -230,15 +238,35 @@
                         });
                         $(cell).attr("data-value",extra[0].value);
                         $(cell).html(extra[0].label);
-                        newValues.push({label:extra[0].label,value:extra[0].value});
-
+                        
                         done=false;
+                        if(options.json.head[indexCell].editable!=false)
+                            newValues.push({label:extra[0].label,value:extra[0].value});
+                        else
+                            notEditable=true;
+                    }
+                    if(options.json.head[indexCell].type=="image")
+                    {
+                        done=false;
+                        if(options.json.head[indexCell].editable!=false)
+                            newValues.push({value:$(cell).find("img").attr("src")});
+                        else
+                            notEditable=true;
+                        
                     }
                 }
                 if(done)
                 {
-                    newValues.push($(cell).val());
+                    if(options.json.head[indexCell].editable!=false)
+                        newValues.push({value:$('.editable-input:input',$(cell)).val()});
+                    else
+                        notEditable=true;
                     $(cell).html($('.editable-input:input',$(cell)).val());
+
+                }
+                if(notEditable)
+                {
+                    newValues.push({value:$(cell).text()});
                 }
             });
             $.each(options.button,function(){

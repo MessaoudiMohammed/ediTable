@@ -130,7 +130,6 @@ var x=$(".ediTable").ediTable(
                     checked:17,
                     unchecked:11,
                     label:function($result){
-                        console.log($result);
                         if($result==17)
                         {
                             return "Active";
@@ -215,10 +214,13 @@ var x=$(".ediTable").ediTable(
         },
         addRow:true,
         sortable:true,
-        keyboard:true
+        keyboard:true,
         // requiredAction:function($inputs){
         // },
         // invalidAction:function($inputs){
         // }
+        afterSave:function(values,oldvalues){
+            console.log(values);
+          }
     }
 );
