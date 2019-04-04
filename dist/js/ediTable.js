@@ -347,7 +347,9 @@
 
                     }else if(options.json.head[indexCell].type=="select")
                     {
-                        input=`<select ${classes}>`;
+                        input=`<select ${classes}>
+                                    <option value="">choose option</option>
+                        `;
                         $.each(options.json.head[indexCell].data,function(index,item){
                             
                             var selected="";
