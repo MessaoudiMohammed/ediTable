@@ -149,7 +149,7 @@
             if($buttonActived)
                 not=":not(:last-child)";
             var required=[],invalid=[],newValues={};
-            $tr.children("td+not+").each(function(indexCell,cell){
+            $tr.children("td"+not).each(function(indexCell,cell){
                 if(options.json.head[indexCell].editable!=false)
                 {
                     if($('.editable-input:input',$(cell)).length==0)
@@ -193,7 +193,7 @@
                     alert("Fields invalid.");
                 return
             }
-            $tr.children("td+not+").each(function(indexCell,cell){
+            $tr.children("td"+not).each(function(indexCell,cell){
                 var done=true,notEditable=false;
                 if($(cell).attr("data-index")!=undefined)
                     indexStr=$(cell).attr("data-index");
@@ -287,9 +287,9 @@
             var not="",newRow=$($tr.clone());
             if($buttonActived)
                 not=":not(:last-child)";
-            newRow.children("td+not+").html("");
-            newRow.children("td+not+").attr("data-value","");
-            newRow.children("td+not+").removeAttr("style");
+            newRow.children("td"+not).html("");
+            newRow.children("td"+not).attr("data-value","");
+            newRow.children("td"+not).removeAttr("style");
             if($($tr,$tr.parent()).is("tr:last-child"))
                 $tr.parent().append(newRow);
             options.afterAdd($(newRow,$tr));
@@ -308,7 +308,7 @@
             })
             
             var input="",indexID=0,indexStr;
-            $tr.children("td+not+").each(function(indexCell,cell){
+            $tr.children("td"+not).each(function(indexCell,cell){
                 
                 
                 if($buttonActived&&$(cell).is(":last-child"))
@@ -381,7 +381,7 @@
                     }                   
                     if(options.json.head[indexCell].validation!=false)
                     {
-                        $(':input',$tr.children(":nth-child(+indexCell+1})")).blur(function(event) {
+                        $(':input',$tr.children(":nth-child("+indexCell+1+")")).blur(function(event) {
                             if(event.target.checkValidity())
                                 $(event.target).removeClass("error")
                             else
