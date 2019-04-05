@@ -467,9 +467,9 @@
                 var i=0;
                 $.each(options.json.body[0], function( index, value ) {
                     if(options.json.head.length&&options.json.head[i].title!=undefined)
-                        $table+="<th>+options.json.head[i].title}</th>";
+                        $table+="<th>"+options.json.head[i].title+"</th>";
                     else
-                        $table+="<th>+index}</th>";
+                        $table+="<th>"+index+"</th>";
                     i++;
                 });
                 $table+="</tr>";
@@ -583,4 +583,3 @@
         }
     };
 }($));
-
