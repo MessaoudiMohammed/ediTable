@@ -50,11 +50,9 @@
             
             if (options.button) {
                 if(options.button.edit.active)
-                    $("."+options.button.edit.selector, $this)
-                        .bind('click', toggle);
+                    $this.on("click","."+options.button.edit.selector,toggle);
                 if(options.button.delete.active)
-                    $("."+options.button.delete.selector, $this)
-                        .bind('click', remove);
+                    $this.on("click","."+options.button.delete.selector,remove);
                 $.each(options.button,function(label,button)
                 {
                     if(!defaultButtons.includes(label))
@@ -62,9 +60,7 @@
                         if(button.action!=undefined&&button.action!=""&&button.action!=null)
                         {
                             if(button.selector!=undefined)
-                            $("."+button.selector, $this)
-                                .bind('click', function(e){
-                                    
+                                $this.on("click","."+button.selector,function(e){
                                     button.action(getValues($(e.currentTarget).parents("tr")),$(e.currentTarget).parents("tr"));
                                 });
                             else
@@ -290,7 +286,6 @@
             newRow.children(`td${not}`).html("");
             newRow.children(`td${not}`).attr("data-value","");
             newRow.children(`td${not}`).removeAttr("style");
-            console.log($($tr,$tr.parent()));
             if($($tr,$tr.parent()).is("tr:last-child"))
                 $tr.parent().append(newRow);
         }
@@ -447,7 +442,7 @@
                     {
                         _values[indexStr]=$(cell).text();
                     }
-                    if(options.json.head.length&&options.json.head[indexCell].type=="checkbox"||options.json.head[indexCell].type=="select")
+                    if(options.json.head.length>0&&(options.json.head[indexCell].type=="checkbox"||options.json.head[indexCell].type=="select"))
                     {                       
                         _values[indexStr]=$(cell).attr("data-value");
                         _check=false;
