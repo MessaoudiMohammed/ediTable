@@ -38,6 +38,9 @@
             afterEdit:function(){},
             beforeDelete:function(){},
             afterDelete:function(){},
+            beforeAdd:function(){},
+            afterAdd:function(){},
+            beforeAppend:function(){},
         },options);
         var defaultButtons=["edit","delete","title"];
         // init function
@@ -50,11 +53,9 @@
             
             if (options.button) {
                 if(options.button.edit.active)
-                    $("."+options.button.edit.selector, $this)
-                        .bind('click', toggle);
+                    $this.on("click","."+options.button.edit.selector,toggle);
                 if(options.button.delete.active)
-                    $("."+options.button.delete.selector, $this)
-                        .bind('click', remove);
+                    $this.on("click","."+options.button.delete.selector,remove);
                 $.each(options.button,function(label,button)
                 {
                     if(!defaultButtons.includes(label))
@@ -62,9 +63,7 @@
                         if(button.action!=undefined&&button.action!=""&&button.action!=null)
                         {
                             if(button.selector!=undefined)
-                            $("."+button.selector, $this)
-                                .bind('click', function(e){
-                                    
+                                $this.on("click","."+button.selector,function(e){
                                     button.action(getValues($(e.currentTarget).parents("tr")),$(e.currentTarget).parents("tr"));
                                 });
                             else
@@ -109,21 +108,21 @@
         var cancel= function($tr){
             var not="";
             if($buttonActived)
-                not=`:not(:last-child)`;
+                not=":not(:last-child)";
             $("td"+not,$tr).each(function(indexCell,cell){
                 var done=true;
                 if(options.json.head!=undefined&&options.json.head.length>0)
                 {
                     if(options.json.head[indexCell].type=="select"||options.json.head[indexCell].type=="checkbox")
                     {
-                        $(cell).attr("data-value",values[$tr.prevAll().length][indexCell].value);
-                        $(cell).html(values[$tr.prevAll().length][indexCell].label);
+                        $(cell).attr("data-value",values[$tr.prevAll().length][$(cell).attr("data-index")]);
+                        $(cell).html(options.json.head[indexCell].label(values[$tr.prevAll().length][$(cell).attr("data-index")]));
                         done=false;
                     }
                     if(options.json.head[indexCell].type=="color")
                     {
-                        $(cell).attr("data-value",values[$tr.prevAll().length][indexCell].value);
-                        $(cell).css("background-color",values[$tr.prevAll().length][indexCell].value);
+                        $(cell).attr("data-value",values[$tr.prevAll().length][$(cell).attr("data-index")]);
+                        $(cell).css("background-color",values[$tr.prevAll().length][$(cell).attr("data-index")]);
                         $(cell).html("");
                         done=false;
                     }
@@ -133,7 +132,7 @@
                     }
                 }
                 if(done)
-                    $(cell).html(values[$tr.prevAll().length][indexCell].value)
+                    $(cell).html(values[$tr.prevAll().length][$(cell).attr("data-index")])
             })
             $.each(options.button,function(){
                 if(this.active)
@@ -148,9 +147,9 @@
             options.beforeSave(values[$tr.prevAll().length],$tr);
             var not="",indexID=0,indexStr="";
             if($buttonActived)
-                not=`:not(:last-child)`;
+                not=":not(:last-child)";
             var required=[],invalid=[],newValues={};
-            $tr.children(`td${not}`).each(function(indexCell,cell){
+            $tr.children("td"+not).each(function(indexCell,cell){
                 if(options.json.head[indexCell].editable!=false)
                 {
                     if($('.editable-input:input',$(cell)).length==0)
@@ -183,7 +182,7 @@
                 if(options.requiredAction)
                     options.requiredAction(required);
                 else
-                    alert(`Fields required.`);
+                    alert("Fields required.");
                 return
             }
             if(invalid.length>0)
@@ -191,10 +190,10 @@
                 if(options.invalidAction)
                     options.invalidAction(invalid);
                 else
-                    alert(`Fields invalid.`);
+                    alert("Fields invalid.");
                 return
             }
-            $tr.children(`td${not}`).each(function(indexCell,cell){
+            $tr.children("td"+not).each(function(indexCell,cell){
                 var done=true,notEditable=false;
                 if($(cell).attr("data-index")!=undefined)
                     indexStr=$(cell).attr("data-index");
@@ -284,14 +283,16 @@
         };
         var add = function($tr)
         {
+            options.beforeAdd();
             var not="",newRow=$($tr.clone());
             if($buttonActived)
-                not=`:not(:last-child)`;
-            newRow.children(`td${not}`).html("");
-            newRow.children(`td${not}`).attr("data-value","");
-            newRow.children(`td${not}`).removeAttr("style");
-            if($tr.is("tr:last"))
+                not=":not(:last-child)";
+            newRow.children("td"+not).html("");
+            newRow.children("td"+not).attr("data-value","");
+            newRow.children("td"+not).removeAttr("style");
+            if($($tr,$tr.parent()).is("tr:last-child"))
                 $tr.parent().append(newRow);
+            options.afterAdd($(newRow,$tr));
         }
         var edit = function($tr)
         {
@@ -307,7 +308,7 @@
             })
             
             var input="",indexID=0,indexStr;
-            $tr.children(`td${not}`).each(function(indexCell,cell){
+            $tr.children("td"+not).each(function(indexCell,cell){
                 
                 
                 if($buttonActived&&$(cell).is(":last-child"))
@@ -331,7 +332,7 @@
                     return values[$tr.prevAll().length][indexStr]=$(cell).children("img").attr("src");
                 if(options.json.head[indexCell].editable!=false)
                 {
-                    input="<input style=\"width:"+$(cell).width()+"px\" type=";
+                    input="<input type=";
                     var classes="class=\"editable-input\"",id="",value="value=\""+values[$tr.prevAll().length][indexStr]+"\"";
                     if(options.json.head[indexCell].classes!=undefined)
                         classes="class=\""+options.json.head[indexCell].classes+" editable-input\" ";                    
@@ -342,17 +343,17 @@
                             return console.error("you missed checked/unchecked property for checkbox column!");
                         if(typeof options.json.head[indexCell].checked=="boolean")
                             check=$.parseJSON($(cell).attr("data-value"));
-                        input+=`"${options.json.head[indexCell].type}" ${classes} ${check==options.json.head[indexCell].checked?"checked":false} />`;
+                        input+="\""+options.json.head[indexCell].type+"\""+ classes+ check==options.json.head[indexCell].checked?" checked":false +"/>";
 
                     }else if(options.json.head[indexCell].type=="select")
                     {
-                        input=`<select ${classes}>`;
+                        input="<select "+classes+"><option value=\"\">choose option</option>";
                         $.each(options.json.head[indexCell].data,function(index,item){
                             
                             var selected="";
                             if($(cell).attr("data-value")==item.value)
                                 selected="selected";
-                            input+=`<option value="${item.value}" ${selected} >${item.label}</option>`
+                            input+="<option value=\""+item.value+"\" "+selected+">"+item.label+"</option>";
                         });
                         input+="</select>";
                     }else
@@ -365,7 +366,7 @@
                             if(options.json.head[indexCell].max!=undefined)
                                 max="max=\""+options.json.head[indexCell].max+"\"";
                         }
-                        input+=`"${options.json.head[indexCell].type}" ${classes} ${min} ${max} ${value} />`
+                        input+="\""+options.json.head[indexCell].type+"\""+ classes + min + max + value+"/>"
                     }
                     $(cell).html(input);
                     $(".editable-input:input",$(cell)).unbind("dblclick");
@@ -380,7 +381,7 @@
                     }                   
                     if(options.json.head[indexCell].validation!=false)
                     {
-                        $(':input',$tr.children(`:nth-child(${indexCell+1})`)).blur(function(event) {
+                        $(':input',$tr.children(":nth-child("+indexCell+1+")")).blur(function(event) {
                             if(event.target.checkValidity())
                                 $(event.target).removeClass("error")
                             else
@@ -444,7 +445,7 @@
                     {
                         _values[indexStr]=$(cell).text();
                     }
-                    if(options.json.head.length&&options.json.head[indexCell].type=="checkbox"||options.json.head[indexCell].type=="select")
+                    if(options.json.head.length>0&&(options.json.head[indexCell].type=="checkbox"||options.json.head[indexCell].type=="select"))
                     {                       
                         _values[indexStr]=$(cell).attr("data-value");
                         _check=false;
@@ -461,26 +462,26 @@
                 return console.error("you missed selector property of button.edit object in options E.G \"{\n\tbutton.edit:{\n\t\tshow:true/false\n\t}\n}\"!");
             if(options.button.edit.active===undefined)
                 return console.error("you missed show property of button.edit object in options E.G \"{\n\tbutton.edit:{\n\t\tshow:true/false\n\t}\n}\"!");
-            var $table=`<thead>`;
-                $table+=`<tr>`;
+            var $table="<thead>";
+                $table+="<tr>";
                 var i=0;
                 $.each(options.json.body[0], function( index, value ) {
                     if(options.json.head.length&&options.json.head[i].title!=undefined)
-                        $table+=`<th>${options.json.head[i].title}</th>`;
+                        $table+="<th>"+options.json.head[i].title+"</th>";
                     else
-                        $table+=`<th>${index}</th>`;
+                        $table+="<th>"+index+"</th>";
                     i++;
                 });
-                $table+=`</tr>`;
-            $table+=`</thead>`;
+                $table+="</tr>";
+            $table+="</thead>";
             $this.prepend($table);
             if(options.json.body!=undefined&&options.json.body.length>0)
             {
-                var $table=`<tbody>`;
+                var $table="<tbody>";
                 if(options.json.head==undefined)
                     options.json.head={};
                 $.each(options.json.body, function( indexRow, row ) {
-                    $table+=`<tr>`;
+                    $table+="<tr>";
                     var i=0;
                     $.each(row, function( indexCell, cell ) {
                         var done=true;
@@ -488,7 +489,7 @@
                         {
                             if(options.json.head[i].type=="color")
                             {
-                                $table+=`<td data-index="${indexCell}" data-value="${cell}" style="background-color:${cell}"></td>`;
+                                $table+="<td data-index=\""+indexCell+"\" data-value=\""+cell+"\" style=\"background-color:"+cell+"\"></td>";
                                 done=false;
                             }                  
                             if(options.json.head[i].type=="select")    
@@ -500,13 +501,13 @@
                                     });
                                     if(!extra.length)
                                         return console.error("make sure that your data is correct!");
-                                    $table+=`<td data-index="${indexCell}" data-value="${extra[0].value}" >${extra[0].label}</td>`;
+                                    $table+="<td data-index="+indexCell+" data-value=\""+extra[0].value+"\">"+extra[0].label+"</td>";
                                     done=false;
                                 }
                             }
                             if(options.json.head[i].type=="image")
                             {
-                                $table+=`<td data-index="${indexCell}" ><img src="${cell}"/></td>`;
+                                $table+="<td data-index=\""+indexCell+"\" ><img src=\""+cell+"\"/></td>";
                                 done=false;
                             }
                                 
@@ -522,18 +523,19 @@
                                     checked=options.json.head[i].checked;
                                 if(options.json.head[i].label!=undefined)
                                     label=options.json.head[i].label(checked)
-                                $table+=`<td data-index="${indexCell}" data-value="${checked}" >${label}</td>`;
+                                $table+="<td data-index=\""+indexCell+"\" data-value=\""+checked+"\">"+label+"</td>";
                                 done=false;
                                 
                             }
                         }
                         if(done)
-                            $table+=`<td data-index="${indexCell}" >${cell}</td>`;
+                            $table+="<td data-index=\""+indexCell+"\" >"+cell+"</td>";
                         i++;
                     });
-                    $table+=`</tr>`;
+                    $table+="</tr>";
                 });
-                $table+=`</tbody>`;
+                $table+="</tbody>";
+                options.beforeAppend($($table));
                 $this.append($table);
             }
             if(options.editable)
@@ -544,8 +546,7 @@
                     $.each(options.button,function(){
                         if(this.active)
                         {
-                            $cell+=`
-                                <span class="${this.selector}" >${this.text}</span>`;
+                            $cell+="<span class=\""+this.selector+"\">"+this.text+"</span>";
                             $buttonActived=true;
                         }
                     });
@@ -553,9 +554,8 @@
                         $(item).append($cell+"</td>");
                 });
                 if($buttonActived)
-                    $this.children("thead").children("tr:first-child").append(`
-                            <th rowspan="${$this.children("thead").children("tr").length}">${options.button.title}</th>
-                        `);
+                    $this.children("thead").children("tr:first-child")
+                        .append("<th rowspan=\""+$this.children("thead").children("tr").length+"\">"+options.button.title+"</th>");
             
             }
             init($this);
@@ -570,8 +570,8 @@
             _instances.push($(this));
             ediTable($(this));
         });
-        var data=function(index=0){
-            
+        var data=function(index){
+            if (index === undefined) { index = 0; }
             var data=[];
             _instances[index].children("tbody").children("tr").each(function(indexRow,row){
                 data.push(getValues($(row)));
@@ -583,4 +583,3 @@
         }
     };
 }($));
-
