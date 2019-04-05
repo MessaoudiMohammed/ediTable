@@ -1,5 +1,5 @@
 //************************************************************************//
-//                        Editable.js v0.0.3 (beta)                       //
+//                        Editable.js v0.0.4 (beta)                       //
 //                         Date Release:04/02/2019                        //
 //                     Developed By:Mohammed Messaoudi                    //
 //                 https://github.com/OxiGen1001/ediTable/                //
@@ -296,100 +296,109 @@
         }
         var edit = function($tr)
         {
-            options.beforeEdit(getValues($tr),$tr);
+            var changes=options.beforeEdit(getValues($tr),$tr);
+            if(changes!=undefined&&changes.options!=undefined)
+            {
+                $.extend(true,options,changes.options)
+            }
             options.add?add($tr):false;
-            var not="";
-            $.each(options.button,function(){
-                if(this.active)
-                {
-                    if(this.textActive!=undefined)
-                        $("."+this.selector,$tr).html(this.textActive);
-                }
-            })
-            
-            var input="",indexID=0,indexStr;
-            $tr.children("td"+not).each(function(indexCell,cell){
-                
-                
-                if($buttonActived&&$(cell).is(":last-child"))
-                    return;
-                if($(cell).attr("data-index")!=undefined&&$(cell).attr("data-index")!="")
-                    indexStr=$(cell).attr("data-index");
-                else
-                    indexStr=indexID;
-                indexID++;
-                if(options.json.head[indexCell]==undefined)
-                    options.json.head[indexCell]=[];
-                if(options.json.head[indexCell].type==undefined)
-                        options.json.head[indexCell].type="text";
-                if(values[$tr.prevAll().length]==undefined)
-                    values[$tr.prevAll().length]={};
-                values[$tr.prevAll().length][indexStr]=$(cell).text();
-                if(options.json.head[indexCell].type=="select"||options.json.head[indexCell].type=="color"||options.json.head[indexCell].type=="checkbox")
-                    values[$tr.prevAll().length][indexStr]=$(cell).attr("data-value");
-                
-                if(options.json.head[indexCell].type=="image")
-                    return values[$tr.prevAll().length][indexStr]=$(cell).children("img").attr("src");
-                if(options.json.head[indexCell].editable!=false)
-                {
-                    input="<input type=";
-                    var classes="class=\"editable-input\"",id="",value="value=\""+values[$tr.prevAll().length][indexStr]+"\"";
-                    if(options.json.head[indexCell].classes!=undefined)
-                        classes="class=\""+options.json.head[indexCell].classes+" editable-input\" ";                    
-                    if(options.json.head[indexCell].type=="checkbox")
-                    {
-                        var check=$(cell).attr("data-value");
-                        if(options.json.head[indexCell].checked==undefined||options.json.head[indexCell].unchecked==undefined)
-                            return console.error("you missed checked/unchecked property for checkbox column!");
-                        if(typeof options.json.head[indexCell].checked=="boolean")
-                            check=$.parseJSON($(cell).attr("data-value"));
-                        input+="\""+options.json.head[indexCell].type+"\""+ classes+ check==options.json.head[indexCell].checked?" checked":false +"/>";
+            if(options.editable)
+            {
 
-                    }else if(options.json.head[indexCell].type=="select")
+            
+                var not="";
+                $.each(options.button,function(){
+                    if(this.active)
                     {
-                        input="<select "+classes+"><option value=\"\">choose option</option>";
-                        $.each(options.json.head[indexCell].data,function(index,item){
-                            
-                            var selected="";
-                            if($(cell).attr("data-value")==item.value)
-                                selected="selected";
-                            input+="<option value=\""+item.value+"\" "+selected+">"+item.label+"</option>";
-                        });
-                        input+="</select>";
-                    }else
-                    {
-                        var min="",max="";
-                        if(options.json.head[indexCell].type=="number")
-                        {
-                            if(options.json.head[indexCell].min!=undefined)
-                                min="min=\""+options.json.head[indexCell].min+"\"";
-                            if(options.json.head[indexCell].max!=undefined)
-                                max="max=\""+options.json.head[indexCell].max+"\"";
-                        }
-                        input+="\""+options.json.head[indexCell].type+"\""+ classes + min + max + value+"/>"
+                        if(this.textActive!=undefined)
+                            $("."+this.selector,$tr).html(this.textActive);
                     }
-                    $(cell).html(input);
-                    $(".editable-input:input",$(cell)).unbind("dblclick");
-                    $(".editable-input:input",$(cell)).bind("dblclick",function(e){
-                        e.stopPropagation();
-                    });
-                    if (options.keyboard) {
+                })
+                
+                var input="",indexID=0,indexStr;
+                $tr.children("td"+not).each(function(indexCell,cell){
+                    if($buttonActived&&$(cell).is(":last-child"))
+                        return;
+                    if($(cell).attr("data-index")!=undefined&&$(cell).attr("data-index")!="")
+                        indexStr=$(cell).attr("data-index");
+                    else
+                        indexStr=indexID;
+                    indexID++;
+                    if(options.json.head[indexCell]==undefined)
+                        options.json.head[indexCell]=[];
+                    if(options.json.head[indexCell].type==undefined)
+                            options.json.head[indexCell].type="text";
+                    if(values[$tr.prevAll().length]==undefined)
+                        values[$tr.prevAll().length]={};
+                    values[$tr.prevAll().length][indexStr]=$(cell).text();
+                    if(options.json.head[indexCell].type=="select"||options.json.head[indexCell].type=="color"||options.json.head[indexCell].type=="checkbox")
+                        values[$tr.prevAll().length][indexStr]=$(cell).attr("data-value");
+                    
+                    if(options.json.head[indexCell].type=="image")
+                        return values[$tr.prevAll().length][indexStr]=$(cell).children("img").attr("src");
+                    if(options.json.head[indexCell].editable!=false)
+                    {
+                        input="<input type=";
+                        var classes=" class=\"editable-input\"",id="",value=" value=\""+values[$tr.prevAll().length][indexStr]+"\"";
+                        if(options.json.head[indexCell].classes!=undefined)
+                            classes="class=\""+options.json.head[indexCell].classes+" editable-input\" ";                    
                         
-                        $(".editable-input:input",$(cell)).on("keydown",function(e){
-                            captureKey(e,$tr);
-                        })
-                    }                   
-                    if(options.json.head[indexCell].validation!=false)
-                    {
-                        $(':input',$tr.children(":nth-child("+indexCell+1+")")).blur(function(event) {
-                            if(event.target.checkValidity())
-                                $(event.target).removeClass("error")
-                            else
-                                $(event.target).addClass("error")
+                        if(options.json.head[indexCell].type=="checkbox")
+                        {
+                            
+                            var check=$(cell).attr("data-value");
+                            if(options.json.head[indexCell].checked==undefined||options.json.head[indexCell].unchecked==undefined)
+                                return console.error("you missed checked/unchecked property for checkbox column!");
+                            if(typeof options.json.head[indexCell].checked=="boolean")
+                                check=$.parseJSON($(cell).attr("data-value"));
+
+                            input+="\""+options.json.head[indexCell].type+"\""+classes+ (check==options.json.head[indexCell].checked?" checked":"") +"/>";
+                        }else if(options.json.head[indexCell].type=="select")
+                        {
+                            input="<select "+classes+"><option value=\"\">choose option</option>";
+                            $.each(options.json.head[indexCell].data,function(index,item){
+                                
+                                var selected="";
+                                if($(cell).attr("data-value")==item.value)
+                                    selected="selected";
+                                input+="<option value=\""+item.value+"\" "+selected+">"+item.label+"</option>";
+                            });
+                            input+="</select>";
+                        }else
+                        {
+                            var min="",max="";
+                            if(options.json.head[indexCell].type=="number")
+                            {
+                                if(options.json.head[indexCell].min!=undefined)
+                                    min="min=\""+options.json.head[indexCell].min+"\"";
+                                if(options.json.head[indexCell].max!=undefined)
+                                    max="max=\""+options.json.head[indexCell].max+"\"";
+                            }
+                            input+="\""+options.json.head[indexCell].type+"\""+ classes + min + max + value+"/>"
+                        }
+                        $(cell).html(input);
+                        $(".editable-input:input",$(cell)).unbind("dblclick");
+                        $(".editable-input:input",$(cell)).bind("dblclick",function(e){
+                            e.stopPropagation();
                         });
+                        if (options.keyboard) {
+                            
+                            $(".editable-input:input",$(cell)).on("keydown",function(e){
+                                captureKey(e,$tr);
+                            })
+                        }                   
+                        if(options.json.head[indexCell].validation!=false)
+                        {
+                            $(':input',$tr.children(":nth-child("+indexCell+1+")")).blur(function(event) {
+                                if(event.target.checkValidity())
+                                    $(event.target).removeClass("error")
+                                else
+                                    $(event.target).addClass("error")
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
             options.afterEdit(values[$tr.prevAll().length],$tr);
         };
         var captureKey= function(e,$tr){
