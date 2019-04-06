@@ -68,7 +68,6 @@ Include Libs in your HTML code:
 			<script>
 				$("table").ediTable();		
 			</script>
-Note: you need to set name of each field in attr "data-index" of your TDs
  - Creating table via (HTML/JSON)
 			
 			<table>
@@ -92,9 +91,7 @@ Note: you need to set name of each field in attr "data-index" of your TDs
 							body:jsonArray,
 						},
 					});		
-			</script>
-Note: you need to set name of each field in attr "data-index" of your TDs
-			
+			</script>			
 ## Options
 |Name|Type| Default |Description|
 |--|--|--| --|
