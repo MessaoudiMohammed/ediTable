@@ -1,5 +1,5 @@
-﻿
-﻿# ediTable v0.0.3 (beta) Jquery Plugin
+
+# ediTable v0.0.3 (beta) Jquery Plugin
 
 ediTable is a JQuery plugin that lets you create table via json,make it sortable, also editable so you can manipulate any cell, set type of input for every cell (text, number, color, select, image, checkbox...) validate cells, make them required etc... add buttons edit/delete/custom buttons...
 
@@ -26,7 +26,11 @@ Demo:
  
 ## Installation
 
- Include css file if you're interested by it (not required) in your HTML code.
+1- via composer :
+	
+	composer require edi-table/edi-table
+
+Include css file if you're interested by it (not required) in your HTML code.
 	
     <link rel="stylesheet" href="/dist/ediTable.min.css" type="text/css" /> 
 
