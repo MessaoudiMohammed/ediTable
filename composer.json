@@ -23,5 +23,6 @@
   "license": "MIT",
   "suggest": {
     "components/jquery": "3"
-  }
+  },
+  "minimum-stability":"dev"
 }
