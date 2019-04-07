@@ -13,6 +13,7 @@
     "bootstrap",
     "material"
   ],
+  "version": "master",
   "homepage": "https://github.com/OxiGen1001/ediTable",
   "authors": [
     {
