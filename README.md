@@ -26,9 +26,11 @@ Demo:
  
 ## Installation
 
-1- via composer :
+Composer :
 	
 	composer require edi-table/edi-table
+
+or
 
 Include css file if you're interested by it (not required) in your HTML code.
 	
