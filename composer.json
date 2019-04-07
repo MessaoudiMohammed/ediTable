@@ -1,0 +1,27 @@
+{
+  "name": "OxiGen1001/ediTable",
+  "description": "ediTable is a JQuery plugin that lets you create table via json,make it sortable, also editable so you can manipulate any cell, set type of input for every cell (text, number, color, select, image, checkbox...) validate cells, make them required etc... add buttons edit/delete/custom buttons...",
+  "keywords": [
+    "javascript",
+    "jquery",
+    "table",
+    "editable",
+    "sortable",
+    "select",
+    "form",
+    "checkbox",
+    "bootstrap",
+    "material"
+  ],
+  "homepage": "https://github.com/OxiGen1001/ediTable",
+  "authors": [
+    {
+      "name": "Mohammed Messaoudi",
+      "homepage": "https://github.com/caseyjhol"
+    },
+  ],
+  "license": "MIT",
+  "suggest": {
+    "components/jquery": "1.9.1 - 3",
+  }
+}
