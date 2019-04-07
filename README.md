@@ -1,7 +1,7 @@
+﻿
+﻿# ediTable v0.0.3 (beta) Jquery Plugin
 
-# ediTable v0.0.3 (beta) Jquery Plugin
-
-ediTable is a JQuery plugin that lets you create table via json,make it sortable, also editable so you can manipulate any cell, set type of input for every cell (text, number, color, select, image, checkbox...) validate cells, make them required etc... add buttons edit/delete/custom buttons...
+ediTable is a JQuery plugin that lets you create table via json,make it sortable, also editable so you can manipulate any cell, set type of input for every cell (text, number, color, select, image, checkbox...) validate cells, make them required etc... add buttons edit/delete/costum buttons...
 
 Demo:
 -   Basic:  [link](https://codepen.io/OxiDev/pen/JVYGzO)
@@ -26,13 +26,7 @@ Demo:
  
 ## Installation
 
-Composer :
-	
-	composer require edi-table/edi-table
-
-or
-
-Include css file if you're interested by it (not required) in your HTML code.
+ Include css file if you're interested by it (not required) in your HTML code.
 	
     <link rel="stylesheet" href="/dist/ediTable.min.css" type="text/css" /> 
 
@@ -74,6 +68,7 @@ Include Libs in your HTML code:
 			<script>
 				$("table").ediTable();		
 			</script>
+Note: you need to set name of each field in attr "data-index" of your TDs
  - Creating table via (HTML/JSON)
 			
 			<table>
@@ -97,7 +92,9 @@ Include Libs in your HTML code:
 							body:jsonArray,
 						},
 					});		
-			</script>			
+			</script>
+Note: you need to set name of each field in attr "data-index" of your TDs
+			
 ## Options
 |Name|Type| Default |Description|
 |--|--|--| --|
