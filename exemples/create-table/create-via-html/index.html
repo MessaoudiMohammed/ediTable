@@ -34,9 +34,9 @@
             </thead>
             <tbody>
                 <tr>
-                <td>Jill</td>
-                <td>Smith</td> 
-                <td>50</td>
+                <td data-index="name">Jill</td>
+                <td data-index="username">Smith</td> 
+                <td data-index="age">50</td>
                 </tr>
                 <tr>
                 <td>Eve</td>
@@ -47,11 +47,11 @@
         </table>
     </div>
     <script src="../../../lib/jquery-3.3.1.min.js"></script>
-    <script src="../../../dist/js/ediTable.min.js"></script>
+    <script src="../../../dist/js/ediTable.js"></script>
     <script src="../../../lib/prism.js"></script>
     <script src="../../data.js"></script> 
     <script>
-        $(".ediTable").ediTable();
+        x=$(".ediTable").ediTable();
     </script>
 </body>
 </html>
