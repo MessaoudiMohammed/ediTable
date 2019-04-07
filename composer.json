@@ -22,6 +22,6 @@
   ],
   "license": "MIT",
   "suggest": {
-    "components/jquery": "3",
+    "components/jquery": "3"
   }
 }
