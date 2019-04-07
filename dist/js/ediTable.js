@@ -1,5 +1,5 @@
 //************************************************************************//
-//                        Editable.js v0.0.4 (beta)                       //
+//                        Editable.js v0.0.3 (beta)                       //
 //                         Date Release:04/02/2019                        //
 //                     Developed By:Mohammed Messaoudi                    //
 //                 https://github.com/OxiGen1001/ediTable/                //
