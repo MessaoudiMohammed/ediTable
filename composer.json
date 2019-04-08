@@ -22,8 +22,8 @@
     }
   ],
   "license": "MIT",
-  "require": {
-    "components/jquery": "3"
+  "requires": {
+    "components/jquery": "3.1"
   },
   "minimum-stability":"dev"
 }
