@@ -25,12 +25,6 @@ Demo:
  
 ## Installation
 
-Composer :
-	
-	composer require edi-table/edi-table
-
-or
-
 Include css file if you're interested by it (not required) in your HTML code.
 	
     <link rel="stylesheet" href="/dist/ediTable.min.css" type="text/css" /> 
