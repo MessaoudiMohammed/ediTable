@@ -6,9 +6,9 @@
 //************************************************************************//
 
 
-// NOTE: this is a new version if you wanna, fork it, i add a new features and options, such as nested table and more...
-// this version is completely diffirent then the minified one so if you wanna fork it, u have to make your own minified file
-// and still there is some bugs and if you notice some of them please let me know in the Issues tab.
+// NOTE: this is a new version if you wanna, fork it, i added a new features and options, such as nested table and more...
+// this version is completely diffirent then the minified one so if you wanna fork/use it, u have to make your own minified file
+// and still there is some bugs and if you notice some of them please let me know in the issues tab.
 // and thank you.
 
 
