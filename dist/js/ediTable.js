@@ -121,15 +121,13 @@
                 });
             }
             if (options.sortable) {
-                $this.children("thead").children('tr').children('th').click(function () {
-                    var table = $(this).parents('table').eq(0)
-                    var rows = table.find('tr:gt(0)').toArray().sort(sort($(this).index()))
-                    var addRows = rows.
-                        this.asc = !this.asc
-                    if (!this.asc) { rows = rows.reverse() }
-                    for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+                $this.children("thead").children('tr').children('th').click((e)=> {
+                    var rows =$this.find('tr:gt(0)').toArray().sort(sort($(e.currentTarget).prevAll().length))
+                    if ($(e.currentTarget).hasClass("asc")) { rows = rows.reverse() }
+                    for (var i = 0; i < rows.length; i++) { $this.append(rows[i]) }
+                    $(e.currentTarget).toggleClass("asc");
                 })
-                $this.children("thead").children('tr').children('th').addClass("sortable");
+                $this.children("thead").children('tr').children('th').addClass("sortable");           
             }
             if (options.nested.active) {
                 $this.on("click", ".nested-table-button", function (e) {
