@@ -97,7 +97,7 @@ Include Libs in your HTML code:
 | editable | boolean | true | make table editable |
 | sortable | boolean | false | make table sortable |
 | json     | Object | ------ | create and define columns (type, title)  |
-| button | Object | ------ | add edit, delete & costum buttons |
+| button | Object | ------ | add edit, delete & custom buttons |
 | add | boolean | false | add new row |
 | keyboard| bool | true | allow Esc/Enter canceling/saving row|
 | beforeSave | Function| ------ | before switching to save mode |
@@ -192,7 +192,7 @@ e.g:
 			]
 		}
 ## Button object
-Button is object where you can set your costum buttons or active edit/delete buttons, it has 2 objects, edit & delete button with default values :
+Button is object where you can set your custom buttons or active edit/delete buttons, it has 2 objects, edit & delete button with default values :
 1. edit/delete objects:
 			 -E.G:
 			 
@@ -212,7 +212,7 @@ Button is object where you can set your costum buttons or active edit/delete but
 					text:"<i class="fas fa-trash-alt"></i>", // default: delete
 					selector:"deleteButton", // class, default: delete
 				},
-				title:"Costum Title" // TH of column  default : Actions
+				title:"Custom Title" // TH of column  default : Actions
 			 }
 			 //...
 2. creating custom button:
