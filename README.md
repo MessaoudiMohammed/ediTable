@@ -3,8 +3,8 @@
 ediTable is a JQuery plugin that lets you create table via json,make it sortable, also editable so you can manipulate any cell, set type of input for every cell (text, number, color, select, image, checkbox...) validate cells, make them required etc... add buttons edit/delete/custom buttons...
 
 Demo:
--   Basic:  [link](https://codepen.io/OxiDev/pen/JVYGzO)
--   Advanced:  [link](https://codepen.io/OxiDev/pen/EJVKMd)
+-   Basic:  [link](https://codepen.io/oxigen1001/pen/zYQXaeE)
+-   Advanced:  [link](https://codepen.io/oxigen1001/pen/MWdRXxJ)
 
 ## Features overview
 
